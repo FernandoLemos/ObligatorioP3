@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Obligatorio2.Models.Emprendimiento>
+
+@{
+    ViewBag.Title = "FiltrarPorCosto";
+}
+
+<h2>FiltrarPorCosto</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            @{ if (Model != null)
+                {
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CodigoEmprendimiento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Titulo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Costo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DuracionPrevista)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Puntaje)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CodigoEmprendimiento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Titulo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Costo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DuracionPrevista)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Puntaje)
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+                    </table>
+                    } 
+                }
+    </div>
+        <div class="col-lg-4 table-bordered" div style="position: fixed;right:-100px ">
+            <h2>Buscar</h2>
+            @Html.ValidationSummary()
+            @using (Html.BeginForm("FiltrarPorCosto", "Emprendimientoes", Session["emprendimientos"] = ViewBag.emprendimientos, FormMethod.Post))
+            {
+                <label for="FiltrarPorCosto1">Costo Disponible</label>
+                @Html.TextBox("costo1f", null, new { @class = "form-control" })
+                <label for="FiltrarPorCosto">Costo Disponible</label>
+                @Html.TextBox("costo2f", null, new { @class = "form-control" })
+                <label for="Duracion">Duracion del emprendimiento</label>
+                @Html.TextBox("duracionf", null, new { @class = "form-control" })
+
+                <input type="submit" value="Buscar">
+            }
+            
+        </div>
+    </div>
+    <p>@ViewBag.mensaje</p>
+</div>

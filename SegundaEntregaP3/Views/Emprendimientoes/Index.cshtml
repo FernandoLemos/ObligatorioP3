@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Obligatorio2.Models.Emprendimiento>
+@{
+    ViewBag.Title = "Listado de Emprendimientos";
+}
+
+<div class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="usuario">@Html.ActionLink("Emprendimientos Para su Bolsillo", "Index", "Emprendimientoes", new { opcion = 1 }, FormMethod.Post)</li>
+                <li class="usuario">@Html.ActionLink("Mejores Puntuados", "Index", "Emprendimientoes", new {opcion=2 }, FormMethod.Post)</li>
+                <li class="usuario">@Html.ActionLink("Emprendimientos sin financiamiento", "Index", "Emprendimientoes" ,new { opcion = 3 }, FormMethod.Post)</li>
+                <li class="usuario">@Html.ActionLink("Emprendimientos con sus financiadores", "Index", "Emprendimientoes", new { opcion = 4 }, FormMethod.Post)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    @{
+        if (@Session["usuarioLog"] == null)
+        {
+            <p class="col-lg-3">Bienvenido Usuario "Visitante" !!</p>
+        }
+        else
+        {
+            <p class="col-lg-3">Bienvenido @Session["usuarioLog"].ToString() !!</p>
+        }
+    }
+    <div class="col-lg-4">
+        @Html.ActionLink("Ingresar", "LoginUsuario", "Usuarios")
+    </div>
+    <div class="col-lg-4">
+        @Html.ActionLink("Salir", "Salir", "Emprendimientoes")
+    </div>
+</div>
+
+<div class="jumbotron">
+    <h1>Listado de Emprendimientos</h1>
+
+</div>
+
+
+<h3><p>@ViewBag.NombreListado</p></h3>
+<div class="row">
+    <div class="col-lg-8">
+        @{if (Model != null)
+            {
+                <div id="gridContent" class="table">
+                    @{
+                        var grid = new WebGrid(
+                            Model,
+                            canPage: true,
+                            rowsPerPage: 5,
+                            selectionFieldName: "seleccionado"
+                            );
+                        grid.Pager(WebGridPagerModes.NextPrevious);
+                    }
+                    @grid.GetHtml(
+                                  columns: grid.Columns(
+                                      grid.Column(header: "Titulo", columnName: "Titulo"),
+                                      grid.Column(header: "Codigo del Emprendimiento", columnName: "CodigoEmprendimiento"),
+                                      grid.Column(header: "Puntuacion", columnName: "Puntaje"),
+                                      grid.Column(header: "Duracion prevista del emprendimiento", columnName: "DuracionPrevista"),
+                                      grid.Column(header: "Costo", columnName: "Costo"),
+                                      grid.Column(header: "Ver Detalle", format: (item) => Html.ActionLink("Ver", "Details", new { id = item.Id }))
+
+
+                                             )
+                                         )
+                </div>
+                        }
+                        else
+                        {
+                            <p>Ustedes no se encuentra financiando ningun Emprendimiento</p>
+                        }
+        }
+    </div>
+    <div class="col-lg-4 table-bordered">
+        <h2>Realizar Búsqueda personalizada</h2>
+        @Html.ValidationSummary()
+        @Html.ActionLink("Nueva Busqueda","FiltrarPorCosto","Emprendimientoes")
+    </div>
+    <p>@ViewBag.mensaje</p>
+</div>
